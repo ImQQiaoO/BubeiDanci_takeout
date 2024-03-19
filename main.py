@@ -45,9 +45,7 @@ for word, interpret in all_words.items():
         break
     index += 1
     print(word, interpret)
-    with open('words.txt', 'a', encoding='utf-8') as f:
-        f.write(str(index) + '. ')
-        f.write(word)
-        for j in range(2 * (25 - len(word))):
-            f.write(" ")
+    with open('words0.csv', 'a', encoding='utf-8') as f:
+        f.write(str(index) + '. ,')
+        f.write(word + ',')
         f.write(interpret + '\n')
