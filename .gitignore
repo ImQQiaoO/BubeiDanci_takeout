@@ -1,5 +1,6 @@
 venv
 .idea
-test.json
+*.json
 *.md
 *.txt
+*.csv

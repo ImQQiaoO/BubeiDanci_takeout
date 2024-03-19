@@ -36,7 +36,7 @@ for i in range(total_pages):
     time.sleep(3)
 shuffle = input("\n是否打乱顺序？(y/n): ")
 if shuffle == 'y':
-    all_words = dict(random.sample(all_words.items(), len(all_words)))
+    all_words = dict(random.sample(list(all_words.items()), len(all_words)))
 
 # 将字典写入文件
 index = 0
