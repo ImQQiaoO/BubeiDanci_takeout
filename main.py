@@ -46,6 +46,4 @@ for word, interpret in all_words.items():
     index += 1
     print(word, interpret)
     with open('words0.csv', 'a', encoding='utf-8') as f:
-        f.write(str(index) + '. ,')
-        f.write(word + ',')
-        f.write(interpret + '\n')
+        f.write(str(index) + '. ,' + word + ',' + interpret + '\n')
