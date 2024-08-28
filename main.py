@@ -38,6 +38,10 @@ shuffle = input("\n是否打乱顺序？(y/n): ")
 if shuffle == 'y':
     all_words = dict(random.sample(list(all_words.items()), len(all_words)))
 
+sort_by_key = input("是否按照字典顺序排序？(y/n): ")
+if sort_by_key == 'y':
+    all_words = dict(sorted(all_words.items(), key=lambda x: x[0]))
+
 # 将字典写入文件
 index = 0
 for word, interpret in all_words.items():
