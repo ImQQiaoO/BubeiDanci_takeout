@@ -2,14 +2,13 @@ import requests
 import time
 import random
 
-
-def get_cookie_and_last_word():
+def get_cookie_and_last_word() -> tuple:
     cookie = input("请输入您的不背单词的cookie，然后按回车键继续...\n")
     last_word = input("请输入您上次导出的最后一个单词，然后按回车键继续，第一次使用请输入任意数字...\n")
     return cookie, last_word
 
 
-def fetch_all_words(headers):
+def fetch_all_words(headers) -> dict:
     all_words = {}
     response = requests.get(
         'https://www.bbdc.cn/api/user-new-word?page=0', headers=headers)
@@ -35,7 +34,7 @@ def fetch_all_words(headers):
     return all_words
 
 
-def save_words(all_words, last_word):
+def save_words(all_words, last_word) -> None:
     index = 0
     for word, interpret in all_words.items():
         if word == last_word:
@@ -46,7 +45,7 @@ def save_words(all_words, last_word):
             f.write(f"{index}. ,{word},{interpret}\n")
 
 
-def main():
+def main() -> None:
     print("欢迎使用不背单词导出工具！")
     cookie, last_word = get_cookie_and_last_word()
     headers = {'cookie': cookie}
