@@ -7,3 +7,6 @@ venv
 *.csv
 __pycache__
 .vscode
+*.spec
+dist
+build
