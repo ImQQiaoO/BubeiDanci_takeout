@@ -10,8 +10,7 @@ def get_cookie_and_last_word() -> tuple:
 
 def fetch_all_words(headers) -> dict:
     all_words = {}
-    response = requests.get(
-        'https://www.bbdc.cn/api/user-new-word?page=0', headers=headers)
+    response = requests.get('https://www.bbdc.cn/api/user-new-word?page=0', headers=headers, timeout=10)
     data = response.json()
     for words_info in data["data_body"]["wordList"]:
         if '\n' in words_info["interpret"]:
@@ -22,8 +21,7 @@ def fetch_all_words(headers) -> dict:
 
     for i in range(total_pages):
         print(f"\r进度：{'#' * (i + 1)} {(i + 1) / total_pages * 100:.2f}%", end="")
-        response = requests.get(
-            f'https://www.bbdc.cn/api/user-new-word?page={i}', headers=headers)
+        response = requests.get(f'https://www.bbdc.cn/api/user-new-word?page={i}', headers=headers, timeout=10)
         data = response.json()
         for words_info in data["data_body"]["wordList"]:
             if '\n' in words_info["interpret"]:
