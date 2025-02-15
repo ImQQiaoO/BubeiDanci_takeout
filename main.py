@@ -14,8 +14,7 @@ def fetch_all_words(headers) -> dict:
     data = response.json()
     for words_info in data["data_body"]["wordList"]:
         if '\n' in words_info["interpret"]:
-            words_info["interpret"] = words_info["interpret"].replace(
-                '\n', ' ')
+            words_info["interpret"] = words_info["interpret"].replace('\n', ' ')
         all_words[words_info["word"]] = words_info["interpret"]
     total_pages = int(data["data_body"]["pageInfo"]['totalPage'])
 
@@ -25,8 +24,7 @@ def fetch_all_words(headers) -> dict:
         data = response.json()
         for words_info in data["data_body"]["wordList"]:
             if '\n' in words_info["interpret"]:
-                words_info["interpret"] = words_info["interpret"].replace(
-                    '\n', ' ')
+                words_info["interpret"] = words_info["interpret"].replace('\n', ' ')
             all_words[words_info["word"]] = words_info["interpret"]
         time.sleep(3)
     return all_words
@@ -39,7 +37,7 @@ def save_words(all_words, last_word) -> None:
             break
         index += 1
         print(word, interpret)
-        with open('words0.csv', 'a', encoding='utf-8') as f:
+        with open('words0.csv', 'a', encoding='mbcs') as f:
             f.write(f"{index}. ,{word},{interpret}\n")
 
 
@@ -52,10 +50,8 @@ def main() -> None:
     if input("\n是否打乱顺序？(y/n): ").lower() == 'y':
         all_words = dict(random.sample(
             list(all_words.items()), len(all_words)))
-
     if input("是否按照字典顺序排序？(y/n): ").lower() == 'y':
         all_words = dict(sorted(all_words.items(), key=lambda x: x[0]))
-
     save_words(all_words, last_word)
 
 
