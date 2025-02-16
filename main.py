@@ -47,17 +47,30 @@ def save_words(all_words) -> None:
             f.write(f"{index}. ,{word},{interpret}\n")
 
 
+def select_output_word_order(all_words):
+    print("请输出导出至文件时的单词顺序（输入数字即可，仅支持单选）：")
+    print("   [0]. 默认顺序")
+    print("   [1]. 打乱顺序")
+    print("   [2]. 字典顺序")
+    while True:
+        choice = input("您的选择是：")
+        if choice == str(0):
+            break
+        elif choice == str(1):
+            all_words = dict(random.sample(list(all_words.items()), len(all_words)))
+            break
+        elif choice == str(2):
+            all_words = dict(sorted(all_words.items(), key=lambda x: x[0]))
+            break
+    return all_words
+
+
 def main() -> None:
     print("欢迎使用不背单词导出工具！")
     cookie = input("请输入您的不背单词的cookie，然后按回车键继续...\n")
     headers = {'cookie': cookie}
     all_words = fetch_all_words(headers)
-
-    if input("\n是否打乱顺序？(y/n): ").lower() == 'y':
-        all_words = dict(random.sample(
-            list(all_words.items()), len(all_words)))
-    if input("是否按照字典顺序排序？(y/n): ").lower() == 'y':
-        all_words = dict(sorted(all_words.items(), key=lambda x: x[0]))
+    all_words = select_output_word_order(all_words)
     save_words(all_words)
 
 
