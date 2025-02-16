@@ -5,6 +5,12 @@ import os
 import csv
 from datetime import datetime
 
+order_options = {
+    '0': '默认顺序',
+    '1': '打乱顺序',
+    '2': '字典顺序'
+}
+
 
 def fetch_page_data(url, headers, retries=3):
     for _ in range(retries):
@@ -41,13 +47,13 @@ def fetch_all_words(headers) -> dict:
     return all_words
 
 
-def save_words(all_words) -> None:
+def save_as_csv(all_words, choice) -> None:
     if os.name == 'nt':
         encoding = 'mbcs'
     else:
         encoding = 'utf-8'
     current_date = datetime.now().strftime('%Y_%m_%d')
-    file_name = f"words-{current_date}.csv"
+    file_name = f"words-{current_date}-{order_options[choice]}.csv"
     with open(file_name, 'a', encoding=encoding, newline='') as f:
         writer = csv.writer(f, quotechar='"', quoting=csv.QUOTE_MINIMAL)
         index = 0
@@ -57,12 +63,7 @@ def save_words(all_words) -> None:
             writer.writerow([index, word, interpret])
 
 
-def select_output_word_order(all_words):
-    order_options = {
-        '0': '默认顺序',
-        '1': '打乱顺序',
-        '2': '字典顺序'
-    }
+def select_output_word_order(all_words) -> tuple:
     print("请输出导出至文件时的单词顺序（输入数字即可，仅支持单选）：")
     for key, value in order_options.items():
         print(f"   [{key}]. {value}")
@@ -78,7 +79,7 @@ def select_output_word_order(all_words):
             break
         else:
             print("输入错误，请重试。")
-    return all_words
+    return all_words, choice
 
 
 def main() -> None:
@@ -86,8 +87,11 @@ def main() -> None:
     cookie = input("请输入您的不背单词的cookie，然后按回车键继续...\n")
     headers = {'cookie': cookie}
     all_words = fetch_all_words(headers)
-    all_words = select_output_word_order(all_words)
-    save_words(all_words)
+    while True:
+        all_words, choice = select_output_word_order(all_words)
+        save_as_csv(all_words, choice)
+        if input("此次保存成功！输入q退出程序，输入其他任意内容继续保存：").lower() == "q":
+            break
 
 
 if __name__ == "__main__":
