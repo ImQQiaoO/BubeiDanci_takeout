@@ -1,6 +1,9 @@
 import requests
 import time
 import random
+import os
+import csv
+from datetime import datetime
 
 
 def fetch_page_data(url, headers, retries=3):
@@ -11,8 +14,8 @@ def fetch_page_data(url, headers, retries=3):
             return response.json()
         except requests.RequestException as e:
             print(f"请求失败: {e}")
-            time.sleep(3)
-        return None
+            time.sleep(random.uniform(2, 5))
+    return None
 
 
 def fetch_all_words(headers) -> dict:
@@ -39,29 +42,42 @@ def fetch_all_words(headers) -> dict:
 
 
 def save_words(all_words) -> None:
-    index = 0
-    for word, interpret in all_words.items():
-        index += 1
-        print(word, interpret)
-        with open('words0.csv', 'a', encoding='mbcs') as f:
-            f.write(f"{index}. ,{word},{interpret}\n")
+    if os.name == 'nt':
+        encoding = 'mbcs'
+    else:
+        encoding = 'utf-8'
+    current_date = datetime.now().strftime('%Y_%m_%d')
+    file_name = f"words-{current_date}.csv"
+    with open(file_name, 'a', encoding=encoding, newline='') as f:
+        writer = csv.writer(f, quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        index = 0
+        for word, interpret in all_words.items():
+            index += 1
+            print(word, interpret)
+            writer.writerow([index, word, interpret])
 
 
 def select_output_word_order(all_words):
+    order_options = {
+        '0': '默认顺序',
+        '1': '打乱顺序',
+        '2': '字典顺序'
+    }
     print("请输出导出至文件时的单词顺序（输入数字即可，仅支持单选）：")
-    print("   [0]. 默认顺序")
-    print("   [1]. 打乱顺序")
-    print("   [2]. 字典顺序")
+    for key, value in order_options.items():
+        print(f"   [{key}]. {value}")
     while True:
         choice = input("您的选择是：")
-        if choice == str(0):
+        if choice == '0':
             break
-        elif choice == str(1):
+        elif choice == '1':
             all_words = dict(random.sample(list(all_words.items()), len(all_words)))
             break
-        elif choice == str(2):
+        elif choice == '2':
             all_words = dict(sorted(all_words.items(), key=lambda x: x[0]))
             break
+        else:
+            print("输入错误，请重试。")
     return all_words
 
 
