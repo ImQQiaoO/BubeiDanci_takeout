@@ -8,7 +8,8 @@ from datetime import datetime
 order_options = {
     '0': '默认顺序',
     '1': '打乱顺序',
-    '2': '字典顺序'
+    '2': '字典顺序',
+    '3': '不导出至文件'
 }
 
 
@@ -47,19 +48,20 @@ def fetch_all_words(headers) -> dict:
     return all_words
 
 
-def save_as_csv(all_words, choice) -> None:
+def save_as_csv(all_words, order_choice) -> None:
     if os.name == 'nt':
         encoding = 'mbcs'
     else:
         encoding = 'utf-8'
     current_date = datetime.now().strftime('%Y_%m_%d')
-    file_name = f"words-{current_date}-{order_options[choice]}.csv"
+    file_name = f"words-{current_date}-{order_options[order_choice]}.csv"
     with open(file_name, 'a', encoding=encoding, newline='') as f:
+        if len(all_words) == 0:
+            return
         writer = csv.writer(f, quotechar='"', quoting=csv.QUOTE_MINIMAL)
         index = 0
         for word, interpret in all_words.items():
             index += 1
-            print(word, interpret)
             writer.writerow([index, word, interpret])
 
 
@@ -68,18 +70,20 @@ def select_output_word_order(all_words) -> tuple:
     for key, value in order_options.items():
         print(f"   [{key}]. {value}")
     while True:
-        choice = input("您的选择是：")
-        if choice == '0':
+        order_choice = input("您的选择是：")
+        if order_choice in ('0', '3'):
             break
-        elif choice == '1':
+        elif order_choice == '1':
             all_words = dict(random.sample(list(all_words.items()), len(all_words)))
             break
-        elif choice == '2':
+        elif order_choice == '2':
             all_words = dict(sorted(all_words.items(), key=lambda x: x[0]))
             break
         else:
             print("输入错误，请重试。")
-    return all_words, choice
+            for key, value in order_options.items():
+                print(f"   [{key}]. {value}")
+    return all_words, order_choice
 
 
 def main() -> None:
@@ -88,9 +92,14 @@ def main() -> None:
     headers = {'cookie': cookie}
     all_words = fetch_all_words(headers)
     while True:
-        all_words, choice = select_output_word_order(all_words)
-        save_as_csv(all_words, choice)
-        if input("此次保存成功！输入q退出程序，输入其他任意内容继续保存：").lower() == "q":
+        all_words, order_choice = select_output_word_order(all_words)
+        for word, interpret in all_words.items():
+            print(word, interpret)
+
+        if order_choice != '3':
+            save_as_csv(all_words, order_choice)
+            print("此次保存成功！", end="")
+        if input("输入q退出程序，输入其他任意内容继续保存：").lower() == "q":
             break
 
 
