@@ -2,31 +2,45 @@ import requests
 import time
 import random
 
+
 def get_cookie_and_last_word() -> tuple:
     cookie = input("请输入您的不背单词的cookie，然后按回车键继续...\n")
     last_word = input("请输入您上次导出的最后一个单词，然后按回车键继续，第一次使用请输入任意数字...\n")
     return cookie, last_word
 
 
+def fetch_page_data(url, headers, retries=3):
+    for _ in range(retries):
+        try:
+            response = requests.get(url, headers=headers, timeout=10)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as e:
+            print(f"请求失败: {e}")
+            time.sleep(3)
+        return None
+
+
 def fetch_all_words(headers) -> dict:
     all_words = {}
-    response = requests.get('https://www.bbdc.cn/api/user-new-word?page=0', headers=headers, timeout=10)
-    data = response.json()
-    for words_info in data["data_body"]["wordList"]:
-        if '\n' in words_info["interpret"]:
-            words_info["interpret"] = words_info["interpret"].replace('\n', ' ')
-        all_words[words_info["word"]] = words_info["interpret"]
+    base_url = 'https://www.bbdc.cn/api/user-new-word?page={page}'
+    first_page_data = fetch_page_data(base_url.format(page=0), headers)
+    if not first_page_data:
+        return all_words
+    data = first_page_data
     total_pages = int(data["data_body"]["pageInfo"]['totalPage'])
-
-    for i in range(total_pages):
+    for words_info in data["data_body"]["wordList"]:
+        interpret = words_info["interpret"].replace('\n', ' ')
+        all_words[words_info["word"]] = interpret
+    for i in range(1, total_pages):
         print(f"\r进度：{'#' * (i + 1)} {(i + 1) / total_pages * 100:.2f}%", end="")
-        response = requests.get(f'https://www.bbdc.cn/api/user-new-word?page={i}', headers=headers, timeout=10)
-        data = response.json()
-        for words_info in data["data_body"]["wordList"]:
-            if '\n' in words_info["interpret"]:
-                words_info["interpret"] = words_info["interpret"].replace('\n', ' ')
-            all_words[words_info["word"]] = words_info["interpret"]
-        time.sleep(3)
+        page_data = fetch_page_data(base_url.format(page=i), headers)
+        if not page_data:
+            break
+        for words_info in page_data["data_body"]["wordList"]:
+            interpret = words_info["interpret"].replace('\n', ' ')
+            all_words[words_info["word"]] = interpret
+    print()
     return all_words
 
 
