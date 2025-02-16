@@ -3,12 +3,6 @@ import time
 import random
 
 
-def get_cookie_and_last_word() -> tuple:
-    cookie = input("请输入您的不背单词的cookie，然后按回车键继续...\n")
-    last_word = input("请输入您上次导出的最后一个单词，然后按回车键继续，第一次使用请输入任意数字...\n")
-    return cookie, last_word
-
-
 def fetch_page_data(url, headers, retries=3):
     for _ in range(retries):
         try:
@@ -44,11 +38,9 @@ def fetch_all_words(headers) -> dict:
     return all_words
 
 
-def save_words(all_words, last_word) -> None:
+def save_words(all_words) -> None:
     index = 0
     for word, interpret in all_words.items():
-        if word == last_word:
-            break
         index += 1
         print(word, interpret)
         with open('words0.csv', 'a', encoding='mbcs') as f:
@@ -57,7 +49,7 @@ def save_words(all_words, last_word) -> None:
 
 def main() -> None:
     print("欢迎使用不背单词导出工具！")
-    cookie, last_word = get_cookie_and_last_word()
+    cookie = input("请输入您的不背单词的cookie，然后按回车键继续...\n")
     headers = {'cookie': cookie}
     all_words = fetch_all_words(headers)
 
@@ -66,7 +58,7 @@ def main() -> None:
             list(all_words.items()), len(all_words)))
     if input("是否按照字典顺序排序？(y/n): ").lower() == 'y':
         all_words = dict(sorted(all_words.items(), key=lambda x: x[0]))
-    save_words(all_words, last_word)
+    save_words(all_words)
 
 
 if __name__ == "__main__":
