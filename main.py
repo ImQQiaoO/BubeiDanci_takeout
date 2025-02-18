@@ -4,12 +4,21 @@ import random
 import os
 import csv
 from datetime import datetime
+from enum import Enum
 
-order_options = {
-    '0': '默认顺序',
-    '1': '打乱顺序',
-    '2': '字典顺序',
-    '3': '不导出至文件'
+
+class OrderOption(Enum):
+    DEFAULT_ORDER = '0'
+    SHUFFLE_ORDER = '1'
+    ALPHABETICAL_ORDER = '2'
+    NO_EXPORT = '3'
+
+
+order_options_dict = {
+    OrderOption.DEFAULT_ORDER: "默认顺序",
+    OrderOption.SHUFFLE_ORDER: "打乱顺序",
+    OrderOption.ALPHABETICAL_ORDER: "字典顺序",
+    OrderOption.NO_EXPORT: "不导出至文件",
 }
 
 
@@ -54,7 +63,7 @@ def save_as_csv(all_words, order_choice) -> None:
     else:
         encoding = 'utf-8'
     current_date = datetime.now().strftime('%Y_%m_%d')
-    file_name = f"words-{current_date}-{order_options[order_choice]}.csv"
+    file_name = f"words-{current_date}-{order_options_dict[OrderOption(order_choice)]}.csv"
     with open(file_name, 'a', encoding=encoding, newline='') as f:
         if len(all_words) == 0:
             return
@@ -67,22 +76,22 @@ def save_as_csv(all_words, order_choice) -> None:
 
 def select_output_word_order(all_words) -> tuple:
     print("请输出导出至文件时的单词顺序（输入数字即可，仅支持单选）：")
-    for key, value in order_options.items():
-        print(f"   [{key}]. {value}")
+    for key, value in order_options_dict.items():
+        print(f"   [{key.value}]. {value}")
     while True:
         order_choice = input("您的选择是：")
-        if order_choice in ('0', '3'):
+        if order_choice in (OrderOption.DEFAULT_ORDER.value, OrderOption.NO_EXPORT.value):
             break
-        elif order_choice == '1':
+        elif order_choice == OrderOption.SHUFFLE_ORDER.value:
             all_words = dict(random.sample(list(all_words.items()), len(all_words)))
             break
-        elif order_choice == '2':
+        elif order_choice == OrderOption.ALPHABETICAL_ORDER.value:
             all_words = dict(sorted(all_words.items(), key=lambda x: x[0]))
             break
         else:
             print("输入错误，请重试。")
-            for key, value in order_options.items():
-                print(f"   [{key}]. {value}")
+            for key, value in order_options_dict.items():
+                print(f"   [{key.value}]. {value}")
     return all_words, order_choice
 
 
@@ -96,7 +105,7 @@ def main() -> None:
         for word, interpret in all_words.items():
             print(word, interpret)
 
-        if order_choice != '3':
+        if order_choice != OrderOption.NO_EXPORT.value:
             save_as_csv(all_words, order_choice)
             print("此次保存成功！", end="")
         if input("输入q退出程序，输入其他任意内容继续保存：").lower() == "q":
