@@ -46,7 +46,9 @@ def fetch_all_words(headers) -> dict:
         interpret = words_info["interpret"].replace('\n', ' ')
         all_words[words_info["word"]] = interpret
     for i in range(1, total_pages):
-        print(f"\r进度：{'#' * (i + 1)} {(i + 1) / total_pages * 100:.2f}%", end="")
+        print("进度：",
+              f'|{"#" * ((i + 1) * 50 // total_pages):50}|',
+              f'{(i + 1) * 100 // total_pages}%', end='\r')
         page_data = fetch_page_data(base_url.format(page=i), headers)
         if not page_data:
             break
@@ -108,7 +110,7 @@ def main() -> None:
         if order_choice != OrderOption.NO_EXPORT.value:
             save_as_csv(all_words, order_choice)
             print("此次保存成功！", end="")
-        if input("输入q退出程序，输入其他任意内容继续保存：").lower() == "q":
+        if input("输入q退出程序，输入其他任意内容按回车键继续保存：").lower() == "q":
             break
 
 
