@@ -110,7 +110,7 @@ def main() -> None:
         if order_choice != OrderOption.NO_EXPORT.value:
             save_as_csv(all_words, order_choice)
             print("此次保存成功！", end="")
-        if input("输入q退出程序，输入其他任意内容按回车键继续保存：").lower() == "q":
+        if input("输入[q]退出程序，输入其他任意内容按回车键继续保存：").lower() == "q":
             break
 
 
