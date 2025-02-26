@@ -19,3 +19,7 @@ order_options_dict = {
 class FormatOption(Enum):
     CSV = '0'
     PDF = '1'
+
+
+GREEN_OUTPUT = '\033[32m'
+COLOUR_END = '\033[0m'
