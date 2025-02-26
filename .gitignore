@@ -4,6 +4,7 @@ venv
 *.json
 *.md
 *.txt
+!requirements.txt
 *.csv
 __pycache__
 .vscode

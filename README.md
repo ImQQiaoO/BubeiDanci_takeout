@@ -22,15 +22,15 @@ BubeiDanci_takeout 是一个工具，用于帮助你导出“不背单词”App�
 
 > 如果选择了从 `Releases` 处下载该软件，则不必关心下面从源代码构建项目的操作。
 
-1. 克隆 **BubeiDanci_takeout** 项目的代码，或直接下载项目中的 `main.py` 文件。
+1. 克隆 **BubeiDanci_takeout** 项目的代码，或直接下载项目中 `src` 下的全部文件。
 
    > 运行该工具需要 Python 环境。如果尚未安装 Python，请从 [Python官网](https://www.python.org/downloads/) 下载并安装。
 
 2. 在项目根目录下打开终端，输入以下命令安装依赖并运行工具：
 
    ```bash
-   pip install requests  # 安装所需的requests库
-   python main.py        # 运行工具
+   pip install -r requirements.txt  # 安装所需的依赖库
+   python main.py                   # 运行工具
    ```
 
 
