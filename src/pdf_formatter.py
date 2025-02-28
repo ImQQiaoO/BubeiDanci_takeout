@@ -64,4 +64,3 @@ def save_as_pdf(all_words, order_choice):
     current_date = datetime.now().strftime('%Y_%m_%d')
     file_name = f"words-{current_date}-{order_options_dict[OrderOption(order_choice)]}.pdf"
     pdf.output(file_name)
-

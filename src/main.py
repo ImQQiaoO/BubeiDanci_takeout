@@ -6,8 +6,6 @@ import csv
 from constants import order_options_dict
 from constants import OrderOption
 from constants import FormatOption
-from constants import GREEN_OUTPUT
-from constants import COLOUR_END
 from datetime import datetime
 from pdf_formatter import save_as_pdf
 
@@ -69,7 +67,7 @@ def save_as_csv(all_words, order_choice) -> None:
 def select_output_word_order(all_words) -> tuple:
     print("请输出导出至文件时的单词顺序（输入数字即可，仅支持单选）：")
     for key, value in order_options_dict.items():
-        print(f"   [{GREEN_OUTPUT}{key.value}{COLOUR_END}]. {value}")
+        print(f"   [{key.value}]. {value}")
     while True:
         order_choice = input("您的选择是：")
         if order_choice in (OrderOption.DEFAULT_ORDER.value, OrderOption.NO_EXPORT.value):
@@ -83,14 +81,14 @@ def select_output_word_order(all_words) -> tuple:
         else:
             print("输入错误，请重试。")
             for key, value in order_options_dict.items():
-                print(f"   [{GREEN_OUTPUT}{key.value}{COLOUR_END}]. {value}")
+                print(f"   [{key.value}]. {value}")
     return all_words, order_choice
 
 
 def select_format():
     print("请输出导出至文件时的文件形式（输入数字即可，仅支持单选）：")
     for option in FormatOption:
-        print(f"   [{GREEN_OUTPUT}{option.value}{COLOUR_END}]. {option.name}")
+        print(f"   [{option.value}]. {option.name}")
     while True:
         format_choice = input("您的选择是：")
         if format_choice in (FormatOption.CSV.value, FormatOption.PDF.value):
@@ -98,7 +96,7 @@ def select_format():
         else:
             print("输入错误，请重试。")
             for option in FormatOption:
-                print(f"   [{GREEN_OUTPUT}{option.value}{COLOUR_END}]. {option.name}")
+                print(f"   [{option.value}]. {option.name}")
     return format_choice
 
 
@@ -119,7 +117,7 @@ def main() -> None:
             elif select_choice == FormatOption.PDF.value:
                 save_as_pdf(all_words, order_choice)
             print("此次保存成功！", end="")
-        if input(f"输入[{GREEN_OUTPUT}q{COLOUR_END}]退出程序，输入其他任意内容按回车键继续保存：").lower() == "q":
+        if input("输入[q]退出程序，输入其他任意内容按回车键继续保存：").lower() == "q":
             break
 
 
