@@ -1,7 +1,9 @@
 from fpdf import FPDF
 from datetime import datetime
 from constants import order_options_dict
+from constants import pdf_direction_dict
 from constants import OrderOption
+from constants import PDFDirection
 import os
 import sys
 
@@ -11,6 +13,21 @@ class PDF(FPDF):
         self.set_font('MSYH', '', 12)
         self.set_y(-15)
         self.cell(0, 10, f"{self.page_no()}", 0, 0, "C")
+        
+        
+def select_pdf_direction():
+    print("请输出导出PDF时的页面方向（输入数字即可，仅支持单选）：")
+    for key, value in pdf_direction_dict.items():
+        print(f"   [{key.value}]. {value}")
+    while True:
+        direction_choice = input("您的选择是：")
+        if direction_choice in (PDFDirection.LONGITUDINAL.value, PDFDirection.HORIZONTAL.value):
+            break
+        else:
+            print("输入错误，请重试。")
+            for key, value in order_options_dict.items():
+                print(f"   [{key.value}]. {value}")
+    return direction_choice
 
 
 def truncate_text(pdf, text, max_width):
@@ -33,7 +50,13 @@ def truncate_text(pdf, text, max_width):
 
 
 def save_as_pdf(all_words, order_choice):
-    pdf = PDF()
+    direction = select_pdf_direction()
+    if direction == PDFDirection.HORIZONTAL.value:
+        col_widths = [20, 50, 200]
+        pdf = PDF(orientation='L')
+    else:
+        col_widths = [20, 50, 120]
+        pdf = PDF()
     pdf.add_page()
     if getattr(sys, 'frozen', False):
         base_path = sys._MEIPASS
@@ -42,7 +65,6 @@ def save_as_pdf(all_words, order_choice):
     font_path = os.path.join(base_path, 'fonts/MSYH.TTC')
     pdf.add_font('MSYH', '', font_path)
     pdf.set_font('MSYH', '', 12)
-    col_widths = [20, 50, 120]
     line_height = pdf.font_size * 2.5
     table_width = sum(col_widths)
 
@@ -62,5 +84,5 @@ def save_as_pdf(all_words, order_choice):
         pdf.ln(line_height)
 
     current_date = datetime.now().strftime('%Y_%m_%d')
-    file_name = f"words-{current_date}-{order_options_dict[OrderOption(order_choice)]}.pdf"
+    file_name = f"words-{current_date}-{order_options_dict[OrderOption(order_choice)]}-{pdf_direction_dict[PDFDirection(direction)]}.pdf"
     pdf.output(file_name)

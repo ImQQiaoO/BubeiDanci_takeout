@@ -19,3 +19,14 @@ order_options_dict = {
 class FormatOption(Enum):
     CSV = '0'
     PDF = '1'
+
+
+class PDFDirection(Enum):
+    LONGITUDINAL = '0'
+    HORIZONTAL = '1'
+
+
+pdf_direction_dict = {
+    PDFDirection.LONGITUDINAL: "纵向",
+    PDFDirection.HORIZONTAL: "横向",
+}
