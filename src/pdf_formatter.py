@@ -25,7 +25,7 @@ def select_pdf_direction():
             break
         else:
             print("输入错误，请重试。")
-            for key, value in order_options_dict.items():
+            for key, value in pdf_direction_dict.items():
                 print(f"   [{key.value}]. {value}")
     return direction_choice
 
