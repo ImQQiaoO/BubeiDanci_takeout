@@ -17,6 +17,7 @@ class PDF(FPDF):
         
 def select_pdf_direction():
     print("请输出导出PDF时的页面方向（输入数字即可，仅支持单选）：")
+    print("选择横向时，会展示较为完整的单词释义")
     for key, value in pdf_direction_dict.items():
         print(f"   [{key.value}]. {value}")
     while True:
