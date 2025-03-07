@@ -33,4 +33,10 @@
 
 导出完成后，你就可以得到你“不背单词”中的**生词本**数据啦！轻松查看你的学习进度吧。
 
-如果有任何问题，请查看项目中的文档或在GitHub提交[issue](https://github.com/ImQQiaoO/BubeiDanci_takeout/issues)反馈。
+如果您对本项目有任何问题，请查看项目中的文档或在GitHub提交[issue](https://github.com/ImQQiaoO/BubeiDanci_takeout/issues)反馈。
+
+如果您觉得好用，请在本项目的右上角为我点亮Star，这是您对我最大的支持与鼓励。
+
+---
+#### 其他
+> 通过 [Releases](https://github.com/ImQQiaoO/BubeiDanci_takeout/releases) 下载的可执行文件可能会被 Windows Defender 等杀毒软件误报。这是因为本项目使用 PyInstaller 将源代码打包成二进制文件进行分发，某些杀毒软件可能将未签名的可执行文件误认为潜在威胁。如果您不信任从 Releases 下载的二进制文件，您可以选择直接从源代码进行构建。我们提供了详细的[构建指南](#构建方法)，您可以通过源代码并按照说明进行构建，从而获得更高的安全性和信任度。
