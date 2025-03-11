@@ -105,6 +105,7 @@ def main() -> None:
     cookie = input("请输入您的不背单词的cookie，然后按回车键继续...\n")
     headers = {'cookie': cookie}
     all_words = fetch_all_words(headers)
+    print(f"单词获取成功，共 {len(all_words)} 个单词。")
     while True:
         all_words, order_choice = select_output_word_order(all_words)
         for word, interpret in all_words.items():
