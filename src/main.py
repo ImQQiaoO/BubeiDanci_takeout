@@ -31,9 +31,9 @@ def fetch_all_words(headers) -> dict:
     data = first_page_data
     total_pages = int(data["data_body"]["pageInfo"]['totalPage'])
     for words_info in data["data_body"]["wordList"]:
-        interpret = words_info["interpret"].replace('\n', ' ')
-        all_words[words_info["word"]] = interpret
+        all_words[words_info["word"]] = '-'
     for i in range(1, total_pages):
+        time.sleep(random.uniform(2, 5))
         print("进度：",
               f'|{"#" * ((i + 1) * 50 // total_pages):50}|',
               f'{(i + 1) * 100 // total_pages}%', end='\r')
@@ -41,8 +41,7 @@ def fetch_all_words(headers) -> dict:
         if not page_data:
             break
         for words_info in page_data["data_body"]["wordList"]:
-            interpret = words_info["interpret"].replace('\n', ' ')
-            all_words[words_info["word"]] = interpret
+            all_words[words_info["word"]] = '-'
     print()
     return all_words
 
@@ -103,7 +102,17 @@ def select_format():
 def main() -> None:
     print("欢迎使用不背单词导出工具！")
     cookie = input("请输入您的不背单词的cookie，然后按回车键继续...\n")
-    headers = {'cookie': cookie}
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/115.0.0.0 Safari/537.36",
+        "cookie": cookie,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1"
+    }
     all_words = fetch_all_words(headers)
     print(f"单词获取成功，共 {len(all_words)} 个单词。")
     while True:
