@@ -59,11 +59,7 @@ def save_as_pdf(all_words, order_choice):
         col_widths = [20, 50, 120]
         pdf = PDF()
     pdf.add_page()
-    if getattr(sys, 'frozen', False):
-        base_path = sys._MEIPASS
-    else:
-        base_path = "./"
-    font_path = os.path.join(base_path, 'fonts/MSYH.TTC')
+    font_path = os.path.join(os.getcwd(), 'dependents/MSYH.TTC')
     pdf.add_font('MSYH', '', font_path)
     pdf.set_font('MSYH', '', 12)
     line_height = pdf.font_size * 2.5
