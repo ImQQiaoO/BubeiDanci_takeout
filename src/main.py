@@ -31,7 +31,7 @@ def fetch_all_words(headers) -> dict:
     data = first_page_data
     total_pages = int(data["data_body"]["pageInfo"]['totalPage'])
     for words_info in data["data_body"]["wordList"]:
-        all_words[words_info["word"]] = '-'
+        all_words[words_info["word"]] = None
     for i in range(1, total_pages):
         time.sleep(random.uniform(2, 5))
         print("进度：",
@@ -41,7 +41,7 @@ def fetch_all_words(headers) -> dict:
         if not page_data:
             break
         for words_info in page_data["data_body"]["wordList"]:
-            all_words[words_info["word"]] = '-'
+            all_words[words_info["word"]] = None
     print()
     return all_words
 
@@ -99,6 +99,31 @@ def select_format():
     return format_choice
 
 
+def load_dictionary() -> dict:
+    dict_path = os.path.join(os.getcwd(), 'ultimate.csv')
+    if not os.path.exists(dict_path):
+        raise FileNotFoundError("未找到字典文件！")
+    dictionary = {}
+    with open(dict_path, mode='r', newline='', encoding='utf-8') as file:
+        csv_reader = csv.reader(file)
+        for row in csv_reader:
+            dictionary[row[0]] = row[3]
+    return dictionary
+
+
+def consult_dictionary(all_words) -> None:
+    print("正在查询字典...")
+    dictionary = load_dictionary()
+    all_words_num = len(all_words)
+    for i in range(all_words_num):
+        word = list(all_words.keys())[i]
+        if word in dictionary:
+            all_words[word] = dictionary[word].replace('\\n', ' ')
+        else:
+            all_words[word] = "-"
+    print("查询完毕！")
+
+
 def main() -> None:
     print("欢迎使用不背单词导出工具！")
     cookie = input("请输入您的不背单词的cookie，然后按回车键继续...\n")
@@ -115,6 +140,7 @@ def main() -> None:
     }
     all_words = fetch_all_words(headers)
     print(f"单词获取成功，共 {len(all_words)} 个单词。")
+    consult_dictionary(all_words)
     while True:
         all_words, order_choice = select_output_word_order(all_words)
         for word, interpret in all_words.items():
