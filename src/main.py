@@ -100,7 +100,7 @@ def select_format():
 
 
 def load_dictionary() -> dict:
-    dict_path = os.path.join(os.getcwd(), 'dependents/ultimate.csv')
+    dict_path = os.path.join(os.getcwd(), 'dependencies/ultimate.csv')
     if not os.path.exists(dict_path):
         raise FileNotFoundError("未找到字典文件！")
     dictionary = {}

@@ -12,4 +12,6 @@ __pycache__
 dist
 build
 *.pdf
-dependents
+dependencies/*.TTC
+dependencies/*.csv
+!/dependencies/README.md

@@ -5,7 +5,6 @@ from constants import pdf_direction_dict
 from constants import OrderOption
 from constants import PDFDirection
 import os
-import sys
 
 
 class PDF(FPDF):
@@ -59,7 +58,7 @@ def save_as_pdf(all_words, order_choice):
         col_widths = [20, 50, 120]
         pdf = PDF()
     pdf.add_page()
-    font_path = os.path.join(os.getcwd(), 'dependents/MSYH.TTC')
+    font_path = os.path.join(os.getcwd(), 'dependencies/MSYH.TTC')
     pdf.add_font('MSYH', '', font_path)
     pdf.set_font('MSYH', '', 12)
     line_height = pdf.font_size * 2.5
