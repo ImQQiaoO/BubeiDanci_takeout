@@ -24,9 +24,11 @@ class FormatOption(Enum):
 class PDFDirection(Enum):
     LONGITUDINAL = '0'
     HORIZONTAL = '1'
+    COMPACT = '2'
 
 
 pdf_direction_dict = {
     PDFDirection.LONGITUDINAL: "纵向",
     PDFDirection.HORIZONTAL: "横向",
+    PDFDirection.COMPACT: "紧凑",
 }

@@ -16,12 +16,12 @@ class PDF(FPDF):
 
 def select_pdf_direction():
     print("请输出导出PDF时的页面方向（输入数字即可，仅支持单选）：")
-    print("选择横向时，会展示较为完整的单词释义")
     for key, value in pdf_direction_dict.items():
         print(f"   [{key.value}]. {value}")
     while True:
         direction_choice = input("您的选择是：")
-        if direction_choice in (PDFDirection.LONGITUDINAL.value, PDFDirection.HORIZONTAL.value):
+        if direction_choice in (PDFDirection.LONGITUDINAL.value, PDFDirection.HORIZONTAL.value,
+                                PDFDirection.COMPACT.value):
             break
         else:
             print("输入错误，请重试。")
@@ -44,10 +44,96 @@ def warp_text(pdf, text, max_width) -> tuple:
         else:
             each_line += '\n'
             warped_text += each_line
-            lines_takeup +=1
+            lines_takeup += 1
             each_line = char
     warped_text += each_line
     return lines_takeup, warped_text
+
+
+def pdf_compact_mode(pdf, all_words, order_choice, direction):
+    pdf.add_page()
+    font_path = os.path.join(os.getcwd(), 'dependencies/MSYH.TTC')
+    pdf.add_font('MSYH', '', font_path)
+    pdf.set_font('MSYH', '', 7)
+
+    left_margin = 10
+    top_margin = 10
+    right_margin = 10
+    page_width = pdf.w - left_margin - right_margin
+    gap = 5
+    col_width = (page_width - gap) / 2
+    line_height = 4
+    
+    current_column = 0 
+    x_positions = [left_margin, left_margin + col_width + gap]
+    y_position = top_margin
+    
+    pdf.set_auto_page_break(False)
+    max_y = pdf.h - 20
+    
+    def split_text_to_lines(text, width):
+        lines = []
+        current_line = ""
+        
+        for char in text:
+            test_line = current_line + char
+            if pdf.get_string_width(test_line) <= width:
+                current_line = test_line
+            else:
+                lines.append(current_line)
+                current_line = char
+        
+        if current_line:
+            lines.append(current_line)
+        
+        return lines
+    
+    for word, interpret in all_words.items():
+        text = f"{word} - {interpret}"
+        
+        indent_offset = pdf.get_string_width(f"{word} - ")
+        
+        first_line_width = col_width
+        wrapped_line_width = col_width - indent_offset
+        
+        first_line = ""
+        remaining_text = text
+        
+        for char in text:
+            test_line = first_line + char
+            if pdf.get_string_width(test_line) <= first_line_width:
+                first_line += char
+                remaining_text = remaining_text[1:]
+            else:
+                break
+        
+        wrapped_lines = split_text_to_lines(remaining_text, wrapped_line_width)
+        
+        total_height = line_height
+        if wrapped_lines:
+            total_height += len(wrapped_lines) * line_height
+        
+        if y_position + total_height > max_y:
+            if current_column == 0:
+                current_column = 1
+                y_position = top_margin
+            else:
+                pdf.add_page()
+                current_column = 0
+                y_position = top_margin
+        
+        pdf.set_xy(x_positions[current_column], y_position)
+        pdf.cell(col_width, line_height, first_line, ln=1)
+        y_position += line_height
+        
+        for line in wrapped_lines:
+            pdf.set_xy(x_positions[current_column] + indent_offset, y_position)
+            pdf.cell(wrapped_line_width, line_height, line, ln=1)
+            y_position += line_height
+    current_date = datetime.now().strftime('%Y_%m_%d')
+    file_name = f"words-{current_date}-{order_options_dict[OrderOption(order_choice)]}-{pdf_direction_dict[PDFDirection(direction)]}.pdf"
+    pdf.output(file_name)
+
 
 
 def save_as_pdf(all_words, order_choice):
@@ -55,9 +141,15 @@ def save_as_pdf(all_words, order_choice):
     if direction == PDFDirection.HORIZONTAL.value:
         col_widths = [20, 50, 200]
         pdf = PDF(orientation='L')
-    else:
+    elif direction == PDFDirection.LONGITUDINAL.value:
         col_widths = [20, 50, 120]
         pdf = PDF()
+    elif direction == PDFDirection.COMPACT.value:
+        pdf = PDF()
+        pdf_compact_mode(pdf, all_words, order_choice, direction)
+        return
+    else:
+        return
     pdf.add_page()
     font_path = os.path.join(os.getcwd(), 'dependencies/MSYH.TTC')
     pdf.add_font('MSYH', '', font_path)
