@@ -53,7 +53,7 @@ def save_as_csv(all_words, order_choice) -> None:
         encoding = 'utf-8'
     current_date = datetime.now().strftime('%Y_%m_%d')
     file_name = f"words-{current_date}-{order_options_dict[OrderOption(order_choice)]}.csv"
-    with open(file_name, 'a', encoding=encoding, newline='') as f:
+    with open(file_name, 'w', encoding=encoding, errors='replace', newline='') as f:
         if len(all_words) == 0:
             return
         writer = csv.writer(f, quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -134,7 +134,6 @@ def main() -> None:
         "cookie": cookie,
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-        "Accept-Encoding": "gzip, deflate, br",
         "Connection": "keep-alive",
         "Upgrade-Insecure-Requests": "1"
     }
