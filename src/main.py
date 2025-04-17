@@ -114,9 +114,7 @@ def load_dictionary() -> dict:
 def consult_dictionary(all_words) -> None:
     print("正在查询字典...")
     dictionary = load_dictionary()
-    all_words_num = len(all_words)
-    for i in range(all_words_num):
-        word = list(all_words.keys())[i]
+    for word in all_words:
         if word in dictionary:
             all_words[word] = dictionary[word].replace('\\n', ' ')
         else:
