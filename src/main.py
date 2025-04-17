@@ -102,7 +102,7 @@ def select_format():
 def load_dictionary() -> dict:
     dict_path = os.path.join(os.getcwd(), 'dependencies/ultimate.csv')
     if not os.path.exists(dict_path):
-        raise FileNotFoundError("未找到字典文件！")
+        raise FileNotFoundError("未找到字典文件！可能是由于未将字典文件放在dependencies目录下。")
     dictionary = {}
     with open(dict_path, mode='r', newline='', encoding='utf-8') as file:
         csv_reader = csv.reader(file)
