@@ -124,20 +124,28 @@ def consult_dictionary(all_words) -> None:
 
 def main() -> None:
     print("欢迎使用不背单词导出工具！")
-    cookie = input("请输入您的不背单词的cookie，然后按回车键继续...\n")
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/115.0.0.0 Safari/537.36",
-        "cookie": cookie,
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-        "Connection": "keep-alive",
-        "Upgrade-Insecure-Requests": "1"
-    }
-    all_words = fetch_all_words(headers)
-    print(f"单词获取成功，共 {len(all_words)} 个单词。")
-    consult_dictionary(all_words)
+    while True:
+        cookie = input("请输入您的不背单词的cookie，然后按回车键继续...\n")
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/115.0.0.0 Safari/537.36",
+            "cookie": cookie,
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
+            "Connection": "keep-alive",
+            "Upgrade-Insecure-Requests": "1"
+        }
+        try:
+            all_words = fetch_all_words(headers)
+            print(f"单词获取成功，共 {len(all_words)} 个单词。")
+            consult_dictionary(all_words)
+            break
+        except requests.exceptions.RequestException as e:
+            print(f"本次请求出错，请重新尝试获取：{e}")
+        except Exception as e:
+            print(f"本次获取单词失败，请检查Cookie是否正确：{e}")
+
     while True:
         all_words, order_choice = select_output_word_order(all_words)
         for word, interpret in all_words.items():
