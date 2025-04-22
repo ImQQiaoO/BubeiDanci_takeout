@@ -25,10 +25,14 @@ class PDFDirection(Enum):
     LONGITUDINAL = '0'
     HORIZONTAL = '1'
     COMPACT = '2'
+    DICTATION_EN = '3'
+    DICTATION_CH = '4'
 
 
 pdf_direction_dict = {
     PDFDirection.LONGITUDINAL: "纵向",
     PDFDirection.HORIZONTAL: "横向",
     PDFDirection.COMPACT: "紧凑",
+    PDFDirection.DICTATION_EN: "默写单词",
+    PDFDirection.DICTATION_CH: "默写释义",
 }

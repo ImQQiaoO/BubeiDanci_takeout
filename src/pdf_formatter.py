@@ -15,18 +15,17 @@ class PDF(FPDF):
 
 
 def select_pdf_direction():
-    print("请输出导出PDF时的页面方向（输入数字即可，仅支持单选）：")
+    print("请输出导出PDF时的页面方向或默写本的内容（输入数字即可，仅支持单选）：")
     for key, value in pdf_direction_dict.items():
         print(f"   [{key.value}]. {value}")
     while True:
         direction_choice = input("您的选择是：")
         if direction_choice in (PDFDirection.LONGITUDINAL.value, PDFDirection.HORIZONTAL.value,
-                                PDFDirection.COMPACT.value):
+                                PDFDirection.COMPACT.value, PDFDirection.DICTATION_EN.value, PDFDirection.DICTATION_CH.value):
             break
-        else:
-            print("输入错误，请重试。")
-            for key, value in pdf_direction_dict.items():
-                print(f"   [{key.value}]. {value}")
+        print("输入错误，请重试。")
+        for key, value in pdf_direction_dict.items():
+            print(f"   [{key.value}]. {value}")
     return direction_choice
 
 
@@ -148,6 +147,9 @@ def save_as_pdf(all_words, order_choice):
         pdf = PDF()
         pdf_compact_mode(pdf, all_words, order_choice, direction)
         return
+    elif direction in (PDFDirection.DICTATION_CH.value, PDFDirection.DICTATION_EN.value):
+        col_widths = [20, 50, 120]
+        pdf = PDF()
     else:
         return
     pdf.add_page()
@@ -168,10 +170,16 @@ def save_as_pdf(all_words, order_choice):
         fill = idx % 2 == 0
         lines_takeup, warped_interpret = warp_text(pdf, interpret, col_widths[2])
         pdf.cell(col_widths[0], line_height * lines_takeup, str(idx + 1), border=1, align="C", fill=fill)
-        pdf.cell(col_widths[1], line_height * lines_takeup, word, border=1, align="C", fill=fill)
+        if direction == PDFDirection.DICTATION_EN.value:
+            pdf.cell(col_widths[1], line_height * lines_takeup, "", border=1, align="C", fill=fill)
+        else:
+            pdf.cell(col_widths[1], line_height * lines_takeup, word, border=1, align="C", fill=fill)
         x = pdf.get_x()
         y = pdf.get_y()
-        pdf.multi_cell(col_widths[2], line_height, warped_interpret, border=1, align="L", fill=fill)
+        if direction == PDFDirection.DICTATION_CH.value:
+            pdf.cell(col_widths[2], line_height * lines_takeup, "", border=1, align="L", fill=fill)
+        else:
+            pdf.multi_cell(col_widths[2], line_height, warped_interpret, border=1, align="L", fill=fill)
         pdf.set_xy(x + col_widths[2], y)
         pdf.ln(line_height * lines_takeup)
 
