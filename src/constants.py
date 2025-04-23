@@ -21,18 +21,27 @@ class FormatOption(Enum):
     PDF = '1'
 
 
+class DictationOption(Enum):
+    DICTATION_OFF = '0'
+    DICTATION_EN = '1'
+    DICTATION_CH = '2'
+
+
+dictation_dict = {
+    DictationOption.DICTATION_OFF: "关闭默写模式",
+    DictationOption.DICTATION_EN: "开启默写模式，默写单词",
+    DictationOption.DICTATION_CH: "开启默写模式，默写释义",
+}
+
+
 class PDFDirection(Enum):
     LONGITUDINAL = '0'
     HORIZONTAL = '1'
     COMPACT = '2'
-    DICTATION_EN = '3'
-    DICTATION_CH = '4'
 
 
 pdf_direction_dict = {
     PDFDirection.LONGITUDINAL: "纵向",
     PDFDirection.HORIZONTAL: "横向",
-    PDFDirection.COMPACT: "紧凑",
-    PDFDirection.DICTATION_EN: "默写单词",
-    PDFDirection.DICTATION_CH: "默写释义",
+    PDFDirection.COMPACT: "紧凑"
 }
