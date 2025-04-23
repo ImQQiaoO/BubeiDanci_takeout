@@ -10,7 +10,10 @@
 4. 在开发者工具的顶部，点击 `Network`（网络）标签页。
 5. 刷新页面（按 `F5`），然后在弹出的请求列表中找到名称为 `newword` 的请求。
 6. 点击该请求，在右侧的详细信息中，找到 `Cookie` 字段，复制其内容（内容可能较长）。
-7. 解压下载好的安装包，双击以 `.exe` 结尾的文件，按照提示输入刚才复制的 `Cookie` 字段即可。
+   
+   以上步骤请参考下图。
+   ![如何获取cookie](/README_imgs/how_to_get_cookie.png)
+7. **解压**下载好的安装包，双击以 `.exe` 结尾的文件，按照提示输入刚才复制的 `Cookie` 字段即可。
 
 ### 构建方法
 
@@ -36,6 +39,23 @@
 如果您对本项目有任何问题，请查看项目中的文档或在GitHub提交[issue](https://github.com/ImQQiaoO/BubeiDanci_takeout/issues)反馈。
 
 如果您觉得好用，请在本项目的右上角为我点亮Star，这是您对我最大的支持与鼓励。
+
+### 功能预览
+1. 导出至PDF:
+   ![pdf_preview](/README_imgs/pdf_preview.png)
+
+2. 导出至PDF时的紧凑模式：
+   ![compact_mode](/README_imgs/compact_mode.png)
+
+2. 导出至PDF时的默写模式：
+   
+   默写释义：
+   ![dictation_ch](/README_imgs/dictation_ch.png)
+
+   默写单词：
+   ![dictation_en](/README_imgs/dictation_en.png)
+
+   > 紧凑模式下不支持默写。
 
 ### 声明
 
