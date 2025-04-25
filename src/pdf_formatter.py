@@ -46,24 +46,23 @@ def select_dictation_mode():
     return direction_choice
 
 
-def warp_text(pdf, text, max_width) -> tuple:
+def wrap_text(pdf, text, max_width) -> tuple:
     lines_takeup = 1
     text_width = pdf.get_string_width(text)
     margin = 2
     if text_width <= max_width - margin:
         return lines_takeup, text
-    warped_text = ""
+    wrapped_text = ""
     each_line = ""
     for char in text:
         if pdf.get_string_width(each_line + char) < max_width - margin:
             each_line += char
         else:
-            each_line += '\n'
-            warped_text += each_line
+            wrapped_text += each_line + '\n'
             lines_takeup += 1
             each_line = char
-    warped_text += each_line
-    return lines_takeup, warped_text
+    wrapped_text += each_line
+    return lines_takeup, wrapped_text
 
 
 def pdf_compact_mode(pdf, all_words, order_choice, direction):
@@ -172,7 +171,7 @@ def save_as_pdf(all_words, order_choice):
     for idx, (word, interpret) in enumerate(all_words.items()):
         pdf.set_x(start_x)
         fill = idx % 2 == 0
-        lines_takeup, warped_interpret = warp_text(pdf, interpret, col_widths[2])
+        lines_takeup, wrapped_interpret = wrap_text(pdf, interpret, col_widths[2])
         pdf.cell(col_widths[0], line_height * lines_takeup, str(idx + 1), border=1, align="C", fill=fill)
         if dictation_mode == DictationOption.DICTATION_EN.value:
             pdf.cell(col_widths[1], line_height * lines_takeup, "", border=1, align="C", fill=fill)
@@ -183,7 +182,7 @@ def save_as_pdf(all_words, order_choice):
         if dictation_mode == DictationOption.DICTATION_CH.value:
             pdf.cell(col_widths[2], line_height * lines_takeup, "", border=1, align="L", fill=fill)
         else:
-            pdf.multi_cell(col_widths[2], line_height, warped_interpret, border=1, align="L", fill=fill)
+            pdf.multi_cell(col_widths[2], line_height, wrapped_interpret, border=1, align="L", fill=fill)
         pdf.set_xy(x + col_widths[2], y)
         pdf.ln(line_height * lines_takeup)
 
