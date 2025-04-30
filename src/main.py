@@ -63,13 +63,21 @@ def save_as_csv(all_words, order_choice) -> None:
             writer.writerow([index, word, interpret])
 
 
-def select_output_word_order(all_words) -> tuple:
+def select_output_word_order(all_words, reverse_flag) -> tuple:
     print("请输出导出至文件时的单词顺序（输入数字即可，仅支持单选）：")
     for key, value in order_options_dict.items():
         print(f"   [{key.value}]. {value}")
     while True:
         order_choice = input("您的选择是：")
         if order_choice in (OrderOption.DEFAULT_ORDER.value, OrderOption.NO_EXPORT.value):
+            if reverse_flag:
+                all_words = dict(reversed(list(all_words.items())))
+                reverse_flag = False
+            break
+        elif order_choice == OrderOption.REVERSE_ORDER.value:
+            if not reverse_flag:
+                all_words = dict(reversed(list(all_words.items())))
+                reverse_flag = True
             break
         elif order_choice == OrderOption.SHUFFLE_ORDER.value:
             all_words = dict(random.sample(list(all_words.items()), len(all_words)))
@@ -81,7 +89,7 @@ def select_output_word_order(all_words) -> tuple:
             print("输入错误，请重试。")
             for key, value in order_options_dict.items():
                 print(f"   [{key.value}]. {value}")
-    return all_words, order_choice
+    return all_words, order_choice, reverse_flag
 
 
 def select_format():
@@ -146,8 +154,9 @@ def main() -> None:
         except Exception as e:
             print(f"本次获取单词失败，请检查Cookie是否正确：{e}")
 
+    reverse_flag = False
     while True:
-        all_words, order_choice = select_output_word_order(all_words)
+        all_words, order_choice, reverse_flag = select_output_word_order(all_words, reverse_flag)
         for word, interpret in all_words.items():
             print(word, interpret)
 

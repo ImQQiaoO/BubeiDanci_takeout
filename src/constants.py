@@ -3,13 +3,15 @@ from enum import Enum
 
 class OrderOption(Enum):
     DEFAULT_ORDER = '0'
-    SHUFFLE_ORDER = '1'
-    ALPHABETICAL_ORDER = '2'
-    NO_EXPORT = '3'
+    REVERSE_ORDER = '1'
+    SHUFFLE_ORDER = '2'
+    ALPHABETICAL_ORDER = '3'
+    NO_EXPORT = '4'
 
 
 order_options_dict = {
-    OrderOption.DEFAULT_ORDER: "默认顺序",
+    OrderOption.DEFAULT_ORDER: "默认顺序（后添加的单词在前）",
+    OrderOption.REVERSE_ORDER: "反向顺序（先添加的单词在前）",
     OrderOption.SHUFFLE_ORDER: "打乱顺序",
     OrderOption.ALPHABETICAL_ORDER: "字典顺序",
     OrderOption.NO_EXPORT: "不导出至文件",

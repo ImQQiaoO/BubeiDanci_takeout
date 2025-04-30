@@ -20,22 +20,6 @@
    ![如何获取cookie](/README_imgs/how_to_get_cookie.png)
 7. **解压**下载好的安装包，双击以 `.exe` 结尾的文件，按照提示输入刚才复制的 `Cookie` 字段即可。
 
-### 构建方法
-
-> 如果选择了从 `Releases` 处下载该软件，则不必关心下面从源代码构建项目的操作。
-
-1. 克隆 **BubeiDanci_takeout** 项目的代码，或直接下载项目中 `src` 下的全部文件。
-
-   > 运行该工具需要 Python 环境。如果尚未安装 Python，请从 [Python官网](https://www.python.org/downloads/) 下载并安装。
-   >
-2. 在项目根目录下打开终端，输入以下命令安装依赖并运行工具：
-
-   ```bash
-   pip install -r requirements.txt  # 安装所需的依赖库
-   python main.py                   # 运行工具
-   ```
-3. 在工具开始运行后，提示输入 `Cookie`。将你刚才复制的 `Cookie` 粘贴到该位置。
-4. 提交后，工具会自动解析你的 `Cookie` 并开始导出你的生词本数据。
 
 ### 完成
 
@@ -69,4 +53,4 @@
 
 ---
 #### 其他
-> 通过 [Releases](https://github.com/ImQQiaoO/BubeiDanci_takeout/releases) 下载的可执行文件可能会被 Windows Defender 等杀毒软件误报。这是因为本项目使用 PyInstaller 将源代码打包成二进制文件进行分发，某些杀毒软件可能将未签名的可执行文件误认为潜在威胁。如果您不信任从 Releases 下载的二进制文件，您可以选择直接从源代码进行构建。我们提供了详细的[构建指南](#构建方法)，您可以通过源代码并按照说明进行构建，从而获得更高的安全性和信任度。
+> 通过 [Releases](https://github.com/ImQQiaoO/BubeiDanci_takeout/releases) 下载的可执行文件可能会被 Windows Defender 等杀毒软件误报。这是因为本项目使用 PyInstaller 将源代码打包成二进制文件进行分发，某些杀毒软件可能将未签名的可执行文件误认为潜在威胁。如果您不信任从 Releases 下载的二进制文件，您可以选择直接从源代码进行构建。
