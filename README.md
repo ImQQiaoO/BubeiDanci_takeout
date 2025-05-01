@@ -5,7 +5,7 @@
 > [!WARNING]
 > 由于闲鱼用户[switch玩家](https://m.tb.cn/h.6m1xhb3?tk=qWGpVVxrRaW)盗卖此项目的二进制文件的运行结果，且并没有注明来源，这严重违反了此项目应用的MIT许可证。
 > 
-> 因此，自[v0.4.4](https://github.com/ImQQiaoO/BubeiDanci_takeout/releases/tag/v0.4.4)版本后，此项目不再分发二进制文件，直至没有人再对此项目进行任何形式盗卖活动为止。
+> 因此，自[v0.4.4](https://github.com/ImQQiaoO/BubeiDanci_takeout/releases/tag/v0.4.4)版本后，此项目不再分发新版本的二进制文件，直至没有人再对此项目进行任何形式盗卖活动为止。
 > 
 > 开源软件维护不易，我在此奉劝，少干那些拾人牙慧的腌臜之事！好自为之！
 
