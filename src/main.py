@@ -74,21 +74,20 @@ def select_output_word_order(all_words, reverse_flag) -> tuple:
                 all_words = dict(reversed(list(all_words.items())))
                 reverse_flag = False
             break
-        elif order_choice == OrderOption.REVERSE_ORDER.value:
+        if order_choice == OrderOption.REVERSE_ORDER.value:
             if not reverse_flag:
                 all_words = dict(reversed(list(all_words.items())))
                 reverse_flag = True
             break
-        elif order_choice == OrderOption.SHUFFLE_ORDER.value:
+        if order_choice == OrderOption.SHUFFLE_ORDER.value:
             all_words = dict(random.sample(list(all_words.items()), len(all_words)))
             break
-        elif order_choice == OrderOption.ALPHABETICAL_ORDER.value:
+        if order_choice == OrderOption.ALPHABETICAL_ORDER.value:
             all_words = dict(sorted(all_words.items(), key=lambda x: x[0]))
             break
-        else:
-            print("输入错误，请重试。")
-            for key, value in order_options_dict.items():
-                print(f"   [{key.value}]. {value}")
+        print("输入错误，请重试。")
+        for key, value in order_options_dict.items():
+            print(f"   [{key.value}]. {value}")
     return all_words, order_choice, reverse_flag
 
 
