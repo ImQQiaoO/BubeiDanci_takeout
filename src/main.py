@@ -1,3 +1,4 @@
+import re
 import requests
 import time
 import random
@@ -8,6 +9,9 @@ from constants import OrderOption
 from constants import FormatOption
 from datetime import datetime
 from pdf_formatter import save_as_pdf
+import sys
+import os
+import subprocess
 
 
 def fetch_page_data(url, headers, retries=3):
@@ -46,7 +50,7 @@ def fetch_all_words(headers) -> dict:
     return all_words
 
 
-def save_as_csv(all_words, order_choice) -> None:
+def save_as_csv(all_words, order_choice) -> str:
     if os.name == 'nt':
         encoding = 'mbcs'
     else:
@@ -55,12 +59,13 @@ def save_as_csv(all_words, order_choice) -> None:
     file_name = f"words-{current_date}-{order_options_dict[OrderOption(order_choice)]}.csv"
     with open(file_name, 'w', encoding=encoding, errors='replace', newline='') as f:
         if len(all_words) == 0:
-            return
+            return None
         writer = csv.writer(f, quotechar='"', quoting=csv.QUOTE_MINIMAL)
         index = 0
         for word, interpret in all_words.items():
             index += 1
             writer.writerow([index, word, interpret])
+    return file_name
 
 
 def select_output_word_order(all_words, reverse_flag) -> tuple:
@@ -127,6 +132,31 @@ def consult_dictionary(all_words) -> None:
         else:
             all_words[word] = "-"
     print("查询完毕！")
+    
+    
+def reveal_in_file_manager(file_path):
+    abs_path = os.path.abspath(file_path)
+    if sys.platform == 'win32':  # Windows
+        subprocess.Popen(f'explorer /select,"{abs_path}"')
+    elif sys.platform == 'darwin':  # macOS
+        subprocess.Popen(['open', '-R', abs_path])  # 在 Finder 中揭示文件
+    elif sys.platform.startswith('linux'):  # Linux
+        dirname = os.path.dirname(abs_path)
+        managers = [
+            ['nautilus', '--select', abs_path],      # GNOME
+            ['dolphin', '--select', abs_path],       # KDE
+            ['thunar', abs_path],                    # XFCE
+            ['pcmanfm', abs_path],                   # LXDE
+            ['xdg-open', dirname]                    # 通用回退
+        ]
+        for manager in managers:
+            try:
+                subprocess.Popen(manager)
+                break
+            except FileNotFoundError:
+                continue
+        else:
+            raise NotImplementedError("Unsupported platform")
 
 
 def main() -> None:
@@ -159,13 +189,22 @@ def main() -> None:
         for word, interpret in all_words.items():
             print(word, interpret)
 
+        output_file = None
         if order_choice != OrderOption.NO_EXPORT.value:
             select_choice = select_format()
             if select_choice == FormatOption.CSV.value:
-                save_as_csv(all_words, order_choice)
+                output_file = save_as_csv(all_words, order_choice)
             elif select_choice == FormatOption.PDF.value:
-                save_as_pdf(all_words, order_choice)
-            print("此次保存成功！", end="")
+                output_file = save_as_pdf(all_words, order_choice)
+            
+            if output_file is not None:
+                print("此次保存成功！是否需要打开文件所在目录？（y/n）", end="")
+                if input().lower() == "y":
+                    reveal_in_file_manager(".\\" + output_file)
+                else:
+                    print("已取消打开文件所在目录。")
+            else:
+                print("保存失败：没有单词可以导出或文件生成失败。")
         if input("输入[q]退出程序，输入其他任意内容按回车键继续保存：").lower() == "q":
             break
 

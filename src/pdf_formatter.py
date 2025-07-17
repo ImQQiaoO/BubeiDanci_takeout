@@ -135,10 +135,11 @@ def pdf_compact_mode(pdf, all_words, order_choice, direction):
     current_date = datetime.now().strftime('%Y_%m_%d')
     file_name = f"words-{current_date}-{order_options_dict[OrderOption(order_choice)]}-{pdf_direction_dict[PDFDirection(direction)]}.pdf"
     pdf.output(file_name)
+    return file_name
 
 
 
-def save_as_pdf(all_words, order_choice):
+def save_as_pdf(all_words, order_choice) -> str:
     direction = select_pdf_direction()
     dictation_mode = DictationOption.DICTATION_OFF.value
     if direction != PDFDirection.COMPACT.value:
@@ -151,10 +152,9 @@ def save_as_pdf(all_words, order_choice):
         pdf = PDF()
     elif direction == PDFDirection.COMPACT.value:
         pdf = PDF()
-        pdf_compact_mode(pdf, all_words, order_choice, direction)
-        return
+        return pdf_compact_mode(pdf, all_words, order_choice, direction)
     else:
-        return
+        return None
     pdf.add_page()
     font_path = os.path.join(os.getcwd(), 'dependencies/MSYH.TTC')
     pdf.add_font('MSYH', '', font_path)
@@ -189,3 +189,4 @@ def save_as_pdf(all_words, order_choice):
     current_date = datetime.now().strftime('%Y_%m_%d')
     file_name = f"words-{current_date}-{order_options_dict[OrderOption(order_choice)]}-{pdf_direction_dict[PDFDirection(direction)]}-{dictation_dict[DictationOption(dictation_mode)]}.pdf"
     pdf.output(file_name)
+    return file_name
