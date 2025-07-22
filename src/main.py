@@ -1,4 +1,3 @@
-import re
 import requests
 import time
 import random
@@ -10,7 +9,6 @@ from constants import FormatOption
 from datetime import datetime
 from pdf_formatter import save_as_pdf
 import sys
-import os
 import subprocess
 
 
