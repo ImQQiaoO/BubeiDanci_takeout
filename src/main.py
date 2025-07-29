@@ -112,7 +112,7 @@ def select_format():
 def load_dictionary() -> dict:
     dict_path = os.path.join(os.getcwd(), 'dependencies/ultimate.csv')
     if not os.path.exists(dict_path):
-        raise FileNotFoundError("未找到字典文件！可能是由于未将字典文件放在dependencies目录下。")
+        raise FileNotFoundError("未找到字典文件！可能是由于未将字典文件 `ultimate.csv` 放在 `dependencies` 目录下。")
     dictionary = {}
     with open(dict_path, mode='r', newline='', encoding='utf-8') as file:
         csv_reader = csv.reader(file)
@@ -178,6 +178,10 @@ def main() -> None:
             break
         except requests.exceptions.RequestException as e:
             print(f"本次请求出错，请重新尝试获取：{e}")
+        except FileNotFoundError as e:
+            print(f"字典文件错误：{e}")
+            input("程序将在您按下回车键后退出...")
+            return
         except Exception as e:
             print(f"本次获取单词失败，请检查Cookie是否正确：{e}")
 
