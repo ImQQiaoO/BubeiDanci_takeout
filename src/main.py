@@ -102,10 +102,9 @@ def select_format():
         format_choice = input("您的选择是：")
         if format_choice in (FormatOption.CSV.value, FormatOption.PDF.value):
             break
-        else:
-            print("输入错误，请重试。")
-            for option in FormatOption:
-                print(f"   [{option.value}]. {option.name}")
+        print("输入错误，请重试。")
+        for option in FormatOption:
+            print(f"   [{option.value}]. {option.name}")
     return format_choice
 
 
