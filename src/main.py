@@ -1,15 +1,15 @@
-import requests
-import time
-import random
-import os
 import csv
-from constants import order_options_dict
-from constants import OrderOption
-from constants import FormatOption
-from datetime import datetime
-from pdf_formatter import save_as_pdf
-import sys
+import os
+import random
 import subprocess
+import sys
+import time
+from datetime import datetime
+
+import requests
+
+from constants import FormatOption, OrderOption, order_options_dict
+from pdf_formatter import save_as_pdf
 
 
 def fetch_page_data(url, headers, retries=3):
@@ -26,19 +26,17 @@ def fetch_page_data(url, headers, retries=3):
 
 def fetch_all_words(headers) -> dict:
     all_words = {}
-    base_url = 'https://www.bbdc.cn/api/user-new-word?page={page}'
+    base_url = "https://www.bbdc.cn/api/user-new-word?page={page}"
     first_page_data = fetch_page_data(base_url.format(page=0), headers)
     if not first_page_data:
         return all_words
     data = first_page_data
-    total_pages = int(data["data_body"]["pageInfo"]['totalPage'])
+    total_pages = int(data["data_body"]["pageInfo"]["totalPage"])
     for words_info in data["data_body"]["wordList"]:
         all_words[words_info["word"]] = None
     for i in range(1, total_pages):
         time.sleep(random.uniform(2, 5))
-        print("进度：",
-              f'|{"#" * ((i + 1) * 50 // total_pages):50}|',
-              f'{(i + 1) * 100 // total_pages}%', end='\r')
+        print("进度：", f"|{'#' * ((i + 1) * 50 // total_pages):50}|", f"{(i + 1) * 100 // total_pages}%", end="\r")
         page_data = fetch_page_data(base_url.format(page=i), headers)
         if not page_data:
             break
@@ -49,13 +47,13 @@ def fetch_all_words(headers) -> dict:
 
 
 def save_as_csv(all_words, order_choice) -> str:
-    if os.name == 'nt':
-        encoding = 'mbcs'
+    if os.name == "nt":
+        encoding = "mbcs"
     else:
-        encoding = 'utf-8'
-    current_date = datetime.now().strftime('%Y_%m_%d')
+        encoding = "utf-8"
+    current_date = datetime.now().strftime("%Y_%m_%d")
     file_name = f"words-{current_date}-{order_options_dict[OrderOption(order_choice)]}.csv"
-    with open(file_name, 'w', encoding=encoding, errors='replace', newline='') as f:
+    with open(file_name, "w", encoding=encoding, errors="replace", newline="") as f:
         if len(all_words) == 0:
             return None
         writer = csv.writer(f, quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -109,11 +107,11 @@ def select_format():
 
 
 def load_dictionary() -> dict:
-    dict_path = os.path.join(os.getcwd(), 'dependencies/ultimate.csv')
+    dict_path = os.path.join(os.getcwd(), "dependencies/ultimate.csv")
     if not os.path.exists(dict_path):
         raise FileNotFoundError("未找到字典文件！可能是由于未将字典文件 `ultimate.csv` 放在 `dependencies` 目录下。")
     dictionary = {}
-    with open(dict_path, mode='r', newline='', encoding='utf-8') as file:
+    with open(dict_path, newline="", encoding="utf-8") as file:
         csv_reader = csv.reader(file)
         for row in csv_reader:
             dictionary[row[0]] = row[3]
@@ -125,12 +123,12 @@ def consult_dictionary(all_words) -> None:
     dictionary = load_dictionary()
     for word in all_words:
         if word in dictionary:
-            all_words[word] = dictionary[word].replace('\\n', ' ')
+            all_words[word] = dictionary[word].replace("\\n", " ")
         else:
             all_words[word] = "-"
     print("查询完毕！")
-    
-    
+
+
 def reveal_in_file_manager(file_path):
     abs_path = os.path.abspath(file_path)
     if sys.platform == 'win32':  # Windows
@@ -197,7 +195,7 @@ def main() -> None:
                 output_file = save_as_csv(all_words, order_choice)
             elif select_choice == FormatOption.PDF.value:
                 output_file = save_as_pdf(all_words, order_choice)
-            
+
             if output_file is not None:
                 print("此次保存成功！是否需要打开文件所在目录？（y/n）", end="")
                 if input().lower() == "y":

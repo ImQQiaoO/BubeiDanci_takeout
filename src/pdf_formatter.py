@@ -97,7 +97,7 @@ def pdf_compact_mode(pdf, all_words, order_choice, direction):
         if current_line:
             lines.append(current_line)
         return lines
-    
+
     for word, interpret in all_words.items():
         text = f"{word} - {interpret}"
         indent_offset = pdf.get_string_width(f"{word} - ")
@@ -112,7 +112,7 @@ def pdf_compact_mode(pdf, all_words, order_choice, direction):
                 remaining_text = remaining_text[1:]
             else:
                 break
-        
+
         wrapped_lines = split_text_to_lines(remaining_text, wrapped_line_width)
         total_height = line_height
         if wrapped_lines:
