@@ -10,6 +10,7 @@ import requests
 
 from constants import FormatOption, OrderOption, order_options_dict
 from pdf_formatter import save_as_pdf
+from xlsx_formatter import save_as_xlsx
 
 
 def fetch_page_data(url, headers, retries=3):
@@ -98,7 +99,7 @@ def select_format():
         print(f"   [{option.value}]. {option.name}")
     while True:
         format_choice = input("您的选择是：")
-        if format_choice in (FormatOption.CSV.value, FormatOption.PDF.value):
+        if format_choice in (FormatOption.CSV.value, FormatOption.PDF.value, FormatOption.XLSX.value):
             break
         print("输入错误，请重试。")
         for option in FormatOption:
@@ -195,6 +196,8 @@ def main() -> None:
                 output_file = save_as_csv(all_words, order_choice)
             elif select_choice == FormatOption.PDF.value:
                 output_file = save_as_pdf(all_words, order_choice)
+            elif select_choice == FormatOption.XLSX.value:
+                output_file = save_as_xlsx(all_words, order_choice)
 
             if output_file is not None:
                 print("此次保存成功！是否需要打开文件所在目录？（y/n）", end="")

@@ -21,6 +21,7 @@ order_options_dict = {
 class FormatOption(Enum):
     CSV = '0'
     PDF = '1'
+    XLSX = '2'
 
 
 class DictationOption(Enum):

@@ -16,3 +16,4 @@ dependencies/*.TTC
 dependencies/*.csv
 !/dependencies/README.md
 *.zip
+*.xlsx
