@@ -2,12 +2,6 @@
 
 **BubeiDanci_takeout** 是一个工具，用于帮助你导出“不背单词”App中的**生词本**数据。按照以下步骤，你就可以轻松导出你的**生词本**！
 
-> [!WARNING]
-> 由于闲鱼用户[switch玩家](https://m.tb.cn/h.6m1xhb3?tk=qWGpVVxrRaW)盗卖此项目的二进制文件的运行结果，且并没有注明来源，这严重违反了此项目应用的MIT许可证。
-> 
-> 因此，自[v0.4.4](https://github.com/ImQQiaoO/BubeiDanci_takeout/releases/tag/v0.4.4)版本后，此项目不再分发新版本的二进制文件，直至没有人再对此项目进行任何形式盗卖活动为止。
-> 
-> 开源软件维护不易，我在此奉劝，少干那些拾人牙慧的腌臜之事！好自为之！
 
 ### 使用步骤
 
@@ -55,4 +49,12 @@
 
 ---
 #### 其他
+> [!TIP]
 > 通过 [Releases](https://github.com/ImQQiaoO/BubeiDanci_takeout/releases) 下载的可执行文件可能会被 Windows Defender 等杀毒软件误报。这是因为本项目使用 PyInstaller 将源代码打包成二进制文件进行分发，某些杀毒软件可能将未签名的可执行文件误认为潜在威胁。如果您不信任从 Releases 下载的二进制文件，您可以选择直接从源代码进行构建。
+
+> [!CAUTION]
+> 本项目完全免费。以下用户在未标明作者的情况下利用此项目的二进制文件的运行成果获取利润，这严重违反了本项目采用的MIT开源协议。
+> - 闲鱼用户[switch玩家](https://m.tb.cn/h.6m1xhb3?tk=qWGpVVxrRaW)。
+> - 小红书用户[软件迷](https://www.xiaohongshu.com/goods-detail/6794d5bb068b240001781290?xsec_token=XBJAh7FxDZNNoCoPSM9avQd_gIqhmvZDdgcYni84c3glk%3D&xsec_source=app_share&instation_link=xhsdiscover%3A%2F%2Fgoods_detail%2F6794d5bb068b240001781290%3Ftrade_ext%3DeyJjaGFubmVsSW5mbyI6bnVsbCwiZHNUb2tlbkluZm8iOm51bGwsInNoYXJlTGluayI6Imh0dHBzOi8vd3d3LnhpYW9ob25nc2h1LmNvbS9nb29kcy1kZXRhaWwvNjc5NGQ1YmIwNjhiMjQwMDAxNzgxMjkwP2FwcHVpZD02MzVlMzZlZjAwMDAwMDAwMTgwMjk1ZjkiLCJsaXZlSW5mbyI6bnVsbCwic2hvcEluZm8iOm51bGwsImdvb2RzTm90ZUluZm8iOm51bGwsImNoYXRJbmZvIjpudWxsLCJzZWFyY2hJbmZvIjpudWxsLCJwcmVmZXIiOm51bGx9%26rate_limit_meta%3DitemId%253D6794d5bb068b24000178128f%26source%3D%26rn%3Dtrue&xhsshare=CopyLink&appuid=635e36ef00000000180295f9&apptime=1751842697&share_id=ea0d5fb765684a4784548c3842428c68&share_channel=copy_link)。
+> 
+> 请大家擦亮双眼，不要购买这些商品，增加不必要的开销。
