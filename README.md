@@ -57,4 +57,4 @@
 > - 闲鱼用户[switch玩家](https://m.tb.cn/h.6m1xhb3?tk=qWGpVVxrRaW)。
 > - 小红书用户[软件迷](https://www.xiaohongshu.com/goods-detail/6794d5bb068b240001781290?xsec_token=XBJAh7FxDZNNoCoPSM9avQd_gIqhmvZDdgcYni84c3glk%3D&xsec_source=app_share&instation_link=xhsdiscover%3A%2F%2Fgoods_detail%2F6794d5bb068b240001781290%3Ftrade_ext%3DeyJjaGFubmVsSW5mbyI6bnVsbCwiZHNUb2tlbkluZm8iOm51bGwsInNoYXJlTGluayI6Imh0dHBzOi8vd3d3LnhpYW9ob25nc2h1LmNvbS9nb29kcy1kZXRhaWwvNjc5NGQ1YmIwNjhiMjQwMDAxNzgxMjkwP2FwcHVpZD02MzVlMzZlZjAwMDAwMDAwMTgwMjk1ZjkiLCJsaXZlSW5mbyI6bnVsbCwic2hvcEluZm8iOm51bGwsImdvb2RzTm90ZUluZm8iOm51bGwsImNoYXRJbmZvIjpudWxsLCJzZWFyY2hJbmZvIjpudWxsLCJwcmVmZXIiOm51bGx9%26rate_limit_meta%3DitemId%253D6794d5bb068b24000178128f%26source%3D%26rn%3Dtrue&xhsshare=CopyLink&appuid=635e36ef00000000180295f9&apptime=1751842697&share_id=ea0d5fb765684a4784548c3842428c68&share_channel=copy_link)。
 > 
-> 请大家擦亮双眼，不要购买这些商品，增加不必要的开销。
+> 请大家擦亮双眼，不要购买这些商品，避免增加不必要的开销。
