@@ -1,13 +1,16 @@
-import openpyxl
 from datetime import datetime
-from constants import order_options_dict
-from constants import OrderOption
+
+import openpyxl
 from openpyxl.styles import Alignment, Font
+
+from constants import OrderOption, order_options_dict
+from path_utils import resolve_output_path
 
 
 def save_as_xlsx(all_words, order_choice) -> str:
     current_date = datetime.now().strftime("%Y_%m_%d")
     file_name = f"words-{current_date}-{order_options_dict[OrderOption(order_choice)]}.xlsx"
+    output_path = resolve_output_path(file_name)
     workbook = openpyxl.Workbook()
     sheet = workbook.active
 
@@ -30,5 +33,5 @@ def save_as_xlsx(all_words, order_choice) -> str:
                 max_length = length
         sheet.column_dimensions[column].width = min(max_length + 2, 80)
 
-    workbook.save(file_name)
-    return file_name
+    workbook.save(str(output_path))
+    return str(output_path)

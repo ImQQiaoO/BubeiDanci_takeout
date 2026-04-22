@@ -1,12 +1,9 @@
-from fpdf import FPDF
 from datetime import datetime
-from constants import order_options_dict
-from constants import pdf_direction_dict
-from constants import dictation_dict
-from constants import OrderOption
-from constants import PDFDirection
-from constants import DictationOption
-import os
+
+from fpdf import FPDF
+
+from constants import DictationOption, OrderOption, PDFDirection, dictation_dict, order_options_dict, pdf_direction_dict
+from path_utils import resolve_output_path, resolve_resource_path
 
 
 class PDF(FPDF):
@@ -67,8 +64,8 @@ def wrap_text(pdf, text, max_width) -> tuple:
 
 def pdf_compact_mode(pdf, all_words, order_choice, direction):
     pdf.add_page()
-    font_path = os.path.join(os.getcwd(), 'dependencies/MSYH.TTC')
-    pdf.add_font('MSYH', '', font_path)
+    font_path = resolve_resource_path('dependencies', 'MSYH.TTC')
+    pdf.add_font('MSYH', '', str(font_path))
     pdf.set_font('MSYH', '', 7)
 
     left_margin = 10
@@ -134,8 +131,9 @@ def pdf_compact_mode(pdf, all_words, order_choice, direction):
             y_position += line_height
     current_date = datetime.now().strftime('%Y_%m_%d')
     file_name = f"words-{current_date}-{order_options_dict[OrderOption(order_choice)]}-{pdf_direction_dict[PDFDirection(direction)]}.pdf"
-    pdf.output(file_name)
-    return file_name
+    output_path = resolve_output_path(file_name)
+    pdf.output(str(output_path))
+    return str(output_path)
 
 
 
@@ -156,8 +154,8 @@ def save_as_pdf(all_words, order_choice) -> str:
     else:
         return None
     pdf.add_page()
-    font_path = os.path.join(os.getcwd(), 'dependencies/MSYH.TTC')
-    pdf.add_font('MSYH', '', font_path)
+    font_path = resolve_resource_path('dependencies', 'MSYH.TTC')
+    pdf.add_font('MSYH', '', str(font_path))
     pdf.set_font('MSYH', '', 12)
     line_height = pdf.font_size * 2.5
     table_width = sum(col_widths)
@@ -188,5 +186,6 @@ def save_as_pdf(all_words, order_choice) -> str:
 
     current_date = datetime.now().strftime('%Y_%m_%d')
     file_name = f"words-{current_date}-{order_options_dict[OrderOption(order_choice)]}-{pdf_direction_dict[PDFDirection(direction)]}-{dictation_dict[DictationOption(dictation_mode)]}.pdf"
-    pdf.output(file_name)
-    return file_name
+    output_path = resolve_output_path(file_name)
+    pdf.output(str(output_path))
+    return str(output_path)

@@ -9,6 +9,7 @@ from datetime import datetime
 import requests
 
 from constants import FormatOption, OrderOption, order_options_dict
+from path_utils import resolve_output_path, resolve_resource_path
 from pdf_formatter import save_as_pdf
 from xlsx_formatter import save_as_xlsx
 
@@ -54,7 +55,8 @@ def save_as_csv(all_words, order_choice) -> str:
         encoding = "utf-8"
     current_date = datetime.now().strftime("%Y_%m_%d")
     file_name = f"words-{current_date}-{order_options_dict[OrderOption(order_choice)]}.csv"
-    with open(file_name, "w", encoding=encoding, errors="replace", newline="") as f:
+    output_path = resolve_output_path(file_name)
+    with open(output_path, "w", encoding=encoding, errors="replace", newline="") as f:
         if len(all_words) == 0:
             return None
         writer = csv.writer(f, quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -62,7 +64,7 @@ def save_as_csv(all_words, order_choice) -> str:
         for word, interpret in all_words.items():
             index += 1
             writer.writerow([index, word, interpret])
-    return file_name
+    return str(output_path)
 
 
 def select_output_word_order(all_words, reverse_flag) -> tuple:
@@ -108,8 +110,8 @@ def select_format():
 
 
 def load_dictionary() -> dict:
-    dict_path = os.path.join(os.getcwd(), "dependencies/ultimate.csv")
-    if not os.path.exists(dict_path):
+    dict_path = resolve_resource_path("dependencies", "ultimate.csv")
+    if not dict_path.exists():
         raise FileNotFoundError("未找到字典文件！可能是由于未将字典文件 `ultimate.csv` 放在 `dependencies` 目录下。")
     dictionary = {}
     with open(dict_path, newline="", encoding="utf-8") as file:
@@ -202,7 +204,7 @@ def main() -> None:
             if output_file is not None:
                 print("此次保存成功！是否需要打开文件所在目录？（y/n）", end="")
                 if input().lower() == "y":
-                    reveal_in_file_manager(".\\" + output_file)
+                    reveal_in_file_manager(output_file)
                 else:
                     print("已取消打开文件所在目录。")
             else:
